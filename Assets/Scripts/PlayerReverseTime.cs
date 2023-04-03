@@ -2,13 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReverseTime : MonoBehaviour
+public class PlayerReverseTime : MonoBehaviour
 {
     public bool isReversing;
     List<ObjectTracker> trackers;
-    public Rigidbody rb;
-    public bool isMovingObject;
-    public CirlceMovement cm;
     private float ang;
 
     private LineRenderer lineRenderer;
@@ -21,16 +18,23 @@ public class ReverseTime : MonoBehaviour
     void Start()
     {
         trackers = new List<ObjectTracker>();
-        rb = GetComponent<Rigidbody>();
-
-        if (isMovingObject)
-        {
-            cm = GetComponent<CirlceMovement>();
-        }
 
         lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.material = lineMaterial;
         lineRenderer.startWidth = 0.1f;
+    }
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("PlayerReverse"))
+        {
+            isReversing = true;
+        }
+
+        if (Input.GetButtonUp("PlayerReverse"))
+        {
+            isReversing = false;
+        }
     }
 
     void FixedUpdate()
@@ -39,26 +43,16 @@ public class ReverseTime : MonoBehaviour
         {
             Reverse();
         }
-        else if (transform.hasChanged)
+        else
         {
             Record();
         }
-
-        transform.hasChanged = false;
     }
 
     public void StartReverse()
     {
         isReversing = true;
-        if(rb)
-        {
-            rb.isKinematic = true;
-        }
-        if (cm)
-        {
-            cm.isActive = false;
-        }
-        if(look && cc)
+        if (look && cc)
         {
             look.enabled = false;
             cc.enabled = false;
@@ -68,14 +62,6 @@ public class ReverseTime : MonoBehaviour
     public void StopReverse()
     {
         isReversing = false;
-        if (rb)
-        {
-            rb.isKinematic = false;
-        }
-        if (cm)
-        {
-            cm.isActive = true;
-        }
         if (look && cc)
         {
             look.enabled = true;
@@ -85,14 +71,7 @@ public class ReverseTime : MonoBehaviour
 
     void Record()
     {
-        if (cm)
-        {
-            ang = cm.angle;
-        }
-        else
-        {
-            ang = 0;
-        }
+        ang = 0;
         trackers.Insert(0, new ObjectTracker(transform.position, transform.rotation, ang));
 
         lineRenderer.positionCount = trackers.Count;
@@ -104,7 +83,7 @@ public class ReverseTime : MonoBehaviour
 
         if (trackers.Count >= 200)
         {
-            trackers.RemoveAt(trackers.Count-1);
+            trackers.RemoveAt(trackers.Count - 1);
         }
     }
     void Reverse()
@@ -114,11 +93,6 @@ public class ReverseTime : MonoBehaviour
             ObjectTracker tracker = trackers[0];
             transform.position = tracker.pos;
             transform.rotation = tracker.rot;
-
-            if (cm)
-            {
-                cm.angle = tracker.ang;
-            }
 
             trackers.RemoveAt(0);
             lineRenderer.positionCount = trackers.Count;

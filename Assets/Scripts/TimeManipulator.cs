@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class TimeManipulator : MonoBehaviour
 {
-    public float timeFactor = 0.05f;
-    public float bulletTimeLength = 4f;
+    public float bulletTimeFactor = 0.05f;
+
+    public float fastTimeFactor = 2.0f;
 
     void Update()
     {
+        // Bullet Time
         if (Input.GetButtonDown("BulletTime"))
         {
             BulletTime();
@@ -18,14 +20,36 @@ public class TimeManipulator : MonoBehaviour
         {
             EndBulletTime();
         }
+
+        // Fast Time
+        if (Input.GetButtonDown("FastTime"))
+        {
+            FastTime();
+        }
+
+        if (Input.GetButtonUp("FastTime"))
+        {
+            EndFastTime();
+        }
     }
 
     void BulletTime()
     {
-        Time.timeScale = timeFactor;
+        Time.timeScale = bulletTimeFactor;
         Time.fixedDeltaTime = Time.timeScale * 0.01f;
     }
     void EndBulletTime()
+    {
+        Time.timeScale = 1;
+        Time.fixedDeltaTime = Time.timeScale * 0.01f;
+    }
+
+    void FastTime()
+    {
+        Time.timeScale = fastTimeFactor;
+        Time.fixedDeltaTime = Time.timeScale * 0.01f;
+    }
+    void EndFastTime()
     {
         Time.timeScale = 1;
         Time.fixedDeltaTime = Time.timeScale * 0.01f;
