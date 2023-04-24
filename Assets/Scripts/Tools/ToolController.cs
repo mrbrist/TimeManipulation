@@ -10,11 +10,14 @@ public class ToolController : MonoBehaviour
     public int currentToolIndex;
     public GameObject[] tools;
     public TextMeshProUGUI ui;
+    private CameraEffectController eff;
 
     private void Start()
     {
         SetTool(0);
         UpdateToolUI(ui);
+
+        eff = GetComponent<CameraEffectController>();
     }
     private void Update()
     {
@@ -36,11 +39,13 @@ public class ToolController : MonoBehaviour
         if (Input.GetButtonDown("UseTool"))
         {
             UseTool();
+            eff.StartEffect(0);
         }
 
         if (Input.GetButtonUp("UseTool"))
         {
             EndUseTool();
+            eff.EndEffect(0);
         }
     }
 

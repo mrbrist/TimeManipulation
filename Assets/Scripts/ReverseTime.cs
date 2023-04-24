@@ -6,9 +6,9 @@ public class ReverseTime : MonoBehaviour
 {
     public bool isReversing;
     List<ObjectTracker> trackers;
-    public Rigidbody rb;
+    private Rigidbody rb;
     public bool isMovingObject;
-    public CirlceMovement cm;
+    private CirlceMovement cm;
     private float ang;
 
     private LineRenderer lineRenderer;

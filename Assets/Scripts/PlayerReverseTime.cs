@@ -14,6 +14,8 @@ public class PlayerReverseTime : MonoBehaviour
     public CharacterController cc;
     public PlayerLook look;
 
+    private CameraEffectController eff;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +24,8 @@ public class PlayerReverseTime : MonoBehaviour
         lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.material = lineMaterial;
         lineRenderer.startWidth = 0.1f;
+
+        eff = GetComponent<CameraEffectController>();
     }
 
     private void Update()
@@ -29,11 +33,13 @@ public class PlayerReverseTime : MonoBehaviour
         if (Input.GetButtonDown("PlayerReverse"))
         {
             isReversing = true;
+            eff.StartEffect(1);
         }
 
         if (Input.GetButtonUp("PlayerReverse"))
         {
             isReversing = false;
+            eff.EndEffect(1);
         }
     }
 
